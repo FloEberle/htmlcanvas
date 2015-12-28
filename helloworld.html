@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Canvas</title>
+</head>
+<body>
+<canvas id="canvas" width="800" height="500" style="border:1px solid #000000; position: absolute; top: 10px; left: 10px;">
+</canvas>
+
+
+<script type="text/javascript">
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    context.save();
+
+    context.fillStyle = '#FF0000';
+    context.fillRect(0, 0, 150, 75);
+
+    context.fillStyle = '#000000';
+    context.moveTo(0, 0);
+    context.lineTo(200,100);
+    context.stroke();
+
+    context.strokeStyle = '#00FF00';
+    context.lineWidth = 5;
+    context.beginPath();
+    context.arc(95, 50, 40, 0, 2*Math.PI);
+    context.stroke();
+
+    context.font = 'italic 30px Arial';
+    context.lineWidth = 1;
+    context.strokeStyle = '#0000FF';
+
+    context.rotate(Math.PI / 4);
+    context.strokeText('Hello Canvas', 10, 50);
+    context.setTransform(1, 0, 0, 1, 0, 0);
+
+    context.beginPath();
+    context.moveTo(0, 100);
+    context.quadraticCurveTo(100, 0, 200, 100);
+    context.lineWidth = 10;
+    context.strokeStyle = 'black';
+
+    context.stroke();
+
+
+    var imageObj = new Image();
+    imageObj.onload = function(e) {
+        var sourceX = 200;
+        var sourceY = 100;
+        var sourceWidth = 150;
+        var sourceHeight = 150;
+        var destWidth = sourceWidth;
+        var destHeight = sourceHeight;
+        var destX = canvas.width / 2 - destWidth / 2;
+        var destY = canvas.height / 2 - destHeight / 2;
+
+        context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+    };
+    imageObj.src = 'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
+
+
+        context.beginPath();
+        context.moveTo(200, 20);
+
+        // line 1
+        context.lineTo(250, 150);
+
+        // quadratic curve
+        context.quadraticCurveTo(260, 210, 290, 150);
+
+        // bezier curve
+        context.bezierCurveTo(290, 40, 300, 230, 400, 150);
+
+        // line 2
+        context.lineTo(500, 90);
+
+        context.lineWidth = 5;
+        context.strokeStyle = 'yellow';
+        context.stroke();
+
+
+    context.beginPath();
+    context.shadowColor   = '#666';
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 15;
+    context.shadowOffsetY = 15;
+      context.arc(600, 400, 70, 0, 2 * Math.PI, false);
+      context.fillStyle = 'purple';
+
+      context.fill();
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 15;
+    context.shadowOffsetY = 15;
+      context.lineWidth = 5;
+      context.strokeStyle = 'yellow';
+
+    context.stroke();
+
+    context.restore();
+
+
+    window.requestAnimFrame = (function(callback) {
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback) {
+              window.setTimeout(callback, 1000 / 60);
+            };
+          })();
+
+
+    function drawRectangle(myRectangle, context) {
+      context.beginPath();
+      context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+      context.fillStyle = '#8ED6FF';
+      context.fill();
+      context.lineWidth = myRectangle.borderWidth;
+      context.strokeStyle = 'black';
+      context.stroke();
+    }
+
+    function animate(myRectangle, canvas, context, startTime) {
+      // update
+      var time = (new Date()).getTime() - startTime;
+
+      var linearSpeed = 100;
+      // pixels / second
+      var newX = linearSpeed * time / 1000;
+
+      if(newX < canvas.width - myRectangle.width - myRectangle.borderWidth / 2) {
+        myRectangle.x = newX;
+      }
+
+
+      // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawRectangle(myRectangle, context);
+      // request new frame
+      requestAnimFrame(function() {
+        animate(myRectangle, canvas, context, startTime);
+      });
+    }
+
+
+
+    var myRectangle = {
+      x: 0,
+      y: 75,
+      width: 100,
+      height: 50,
+      borderWidth: 5
+    };
+
+    drawRectangle(myRectangle, context);
+
+    setTimeout(function() {
+            var startTime = (new Date()).getTime();
+            animate(myRectangle, canvas, context, startTime);
+          }, 1000);
+
+
+
+
+
+</script>
+</body>
+</html>
