@@ -72,16 +72,33 @@
 
     var update = function (modifier) {
         if (38 in keysDown) { // Player holding up
-            goat.y -= goat.speed * modifier;
+            if(goat.y > 0) {
+                goat.y -= goat.speed * modifier;
+            } else {
+                goat.y = canvas.height;
+            }
         }
         if (40 in keysDown) { // Player holding down
-            goat.y += goat.speed * modifier;
+            if (goat.y < canvas.height) {
+                goat.y += goat.speed * modifier;
+            } else {
+                goat.y = 0;
+            }
+
         }
         if (37 in keysDown) { // Player holding left
-            goat.x -= goat.speed * modifier;
+            if(goat.x > 0) {
+                goat.x -= goat.speed * modifier;
+            } else {
+                goat.x = canvas.width;
+            }
         }
         if (39 in keysDown) { // Player holding right
-            goat.x += goat.speed * modifier;
+            if(goat.x < canvas.width) {
+                goat.x += goat.speed * modifier;
+            } else {
+                goat.x = 0;
+            }
         }
         // Are they touching?
         if (
@@ -116,11 +133,12 @@
         ctx.textBaseline = "top";
         ctx.fillText("Dickbutt caught: " + monstersCaught, 32, 32);
     };
-    render();
+
     // The main game loop
     var main = function () {
         var now = Date.now();
         var delta = now - then;
+
 
         update(delta / 1000);
         render();
